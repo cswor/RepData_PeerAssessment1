@@ -1,13 +1,13 @@
 step1	act	read.csv	actNM	complete.cases	head
-step2	sumSteps	actNM	%>%	group_by	date	summarise	sum	steps	windows	g	ggplot	aes	as.Date	ssteps	geom_bar	scale_x_date	labs	ggtitle	print
+step2	sumSteps	actNM	%>%	group_by	date	summarise	sum	steps	g	ggplot	aes	as.Date	ssteps	geom_bar	scale_x_date	labs	ggtitle	print
 step3	daystats	actNM	%>%	group_by	date	summarise	sum	steps	median	avgdaystats	mean	daymn	daymd	mn	as.numeric	md	print	paste
 step4	daystats	actNM	%>%	group_by	date	summarise	sum	steps	median	avgdaystats	mean	daymn	daymd	mn	as.numeric	md	print	paste
-step5	intSteps	actNM	%>%	group_by	interval	summarise	mean	steps	windows	g2	ggplot	aes	isteps	geom_line	scale_x_continuous	round	seq	min	max	labs	ggtitle	print
+step5	intSteps	actNM	%>%	group_by	interval	summarise	mean	steps	g2	ggplot	aes	isteps	geom_line	scale_x_continuous	round	seq	min	max	labs	ggtitle	print
 step6	maxobs	intSteps	which.max	isteps	xint	as.numeric	print
 step7	miss	sum	is.na	act	steps	print	paste
 step8	act2	merge	act	intSteps	steps	ifelse	is.na	isteps
-step9	sumSteps2	act2	%>%	group_by	date	summarise	sum	steps	windows	g	ggplot	aes	as.Date	ssteps	geom_bar	scale_x_date	labs	ggtitle	print
+step9	sumSteps2	act2	%>%	group_by	date	summarise	sum	steps	g	ggplot	aes	as.Date	ssteps	geom_bar	scale_x_date	labs	ggtitle	print
 step10	avgdaystats2	sumSteps2	%>%	summarise	mean	ssteps	median	mn	as.numeric	md	print	paste
 step11	act2	weekend	ifelse	is.weekend	as.Date	date	head
 step12	act2	%>%	group_by	interval	weekend	summarise	mean	steps	median
-step13	windows	p	ggplot	act2	aes	interval	isteps	geom_bar	scale_x_continuous	round	seq	min	max	facet_grid	.	weekend	theme	element_text	rel	print	labs	ggtitle
+step13	p	ggplot	act2	aes	interval	isteps	geom_bar	scale_x_continuous	round	seq	min	max	facet_grid	.	weekend	theme	element_text	rel	print	labs	ggtitle

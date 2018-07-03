@@ -25,12 +25,14 @@ The following code produces a histogram of the daily steps taken. As you can see
 ```{r step2, cache = T, autodep= TRUE}
 
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
-windows()
+#windows()
+#png(filename = "Step2.png", width = 480, height = 480)
 g <- ggplot(sumSteps, aes(x=as.Date(sumSteps$date), y=sumSteps$ssteps)) # + stat_summary(fun.y=sum)
 g <- g +  geom_bar(stat = "identity")
 g <- g +  scale_x_date(date_labels = "%b %d", date_breaks = "1 week")
 g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 2 - Total Daily Steps w/Missing Values Dropped")
 print(g)
+#dev.off()
 ```
 
 + **Mean and Median Daily Activity**
@@ -64,12 +66,14 @@ The following code produces a the average activity level by interval.
 ```{r step5, cache = T, autodep= TRUE}
 intSteps <- actNM %>% group_by(interval) %>% summarise(isteps = mean(steps))
 
-windows()
+#windows()
+#png(filename = "Step3.png", width = 480, height = 480)
 g2 <- ggplot(intSteps, aes(x=intSteps$interval, y=intSteps$isteps))
 g2 <- g2 +  geom_line()
 g2 <- g2 +  scale_x_continuous(breaks = round(seq(min(intSteps$interval), max(intSteps$interval), by = 200)))
 g2 <- g2 + labs(x="Interval", y="Avg Steps") + ggtitle("Step 3 - Average Steps by Interval")
 print(g2)
+#dev.off()
 ```
 
 + **Maximum Activity Interval**
@@ -101,12 +105,14 @@ This resulted in improved data and the following histogram:
 
 ```{r step9, cache = T, autodep= TRUE}
 sumSteps2 <- act2 %>% group_by(date) %>% summarise(ssteps = sum(steps))
-windows()
+#windows()
+#png(filename = "Step4.png", width = 480, height = 480)
 g <- ggplot(sumSteps2, aes(x=as.Date(sumSteps2$date), y=sumSteps2$ssteps))
 g <- g +  geom_bar(stat = "identity")
 g <- g +  scale_x_date(date_labels = "%b %d", date_breaks = "1 week")
 g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 4 - Total Daily Steps w/Missing Values Set to Interval Mean")
 print(g)
+#dev.off()
 ```
 
 + **Mean and Median Values**
@@ -140,12 +146,13 @@ act2 <- act2 %>% group_by(interval,weekend) %>% summarise(isteps = mean(steps), 
 The following plot show a significant difference in weekend vs weekday activity levels. As you can see, weekday activities spike between interval 800 and 900 where as weekend activity does not reach the same high level but has somewhat higher levels across the day.
 
 ```{r step13, cache = T, autodep= TRUE}
-windows()
+#windows()
+#png(filename = "Step5.png", width = 480, height = 480)
 p <- ggplot(act2, aes(interval, isteps)) + geom_bar(stat="identity")
 p <- p + scale_x_continuous(breaks = round(seq(min(act2$interval), max(act2$interval), by = 200)))
 p <- p + facet_grid(. ~ act2$weekend)
 p <- p + theme(axis.text = element_text(size=rel(.6)))
 
 print(p + labs(x="Interval", y="Avg Interval Steps") + ggtitle("Step 5 - Weekday vs Weekend Behavior"))
-
+#dev.off()
 ```

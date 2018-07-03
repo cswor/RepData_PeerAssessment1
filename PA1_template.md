@@ -57,7 +57,8 @@ The following code produces a histogram of the daily steps taken. As you can see
 
 ```r
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
-windows()
+#windows()
+#png(filename = "Step2.png", width = 480, height = 480)
 g <- ggplot(sumSteps, aes(x=as.Date(sumSteps$date), y=sumSteps$ssteps)) # + stat_summary(fun.y=sum)
 g <- g +  geom_bar(stat = "identity")
 g <- g +  scale_x_date(date_labels = "%b %d", date_breaks = "1 week")
@@ -66,6 +67,10 @@ print(g)
 ```
 
 ![](PA1_template_files/figure-html/step2-1.png)<!-- -->
+
+```r
+#dev.off()
+```
 
 + **Mean and Median Daily Activity**
 The following code computes daily summary data for the activity dataset.
@@ -123,7 +128,8 @@ The following code produces a the average activity level by interval.
 ```r
 intSteps <- actNM %>% group_by(interval) %>% summarise(isteps = mean(steps))
 
-windows()
+#windows()
+#png(filename = "Step3.png", width = 480, height = 480)
 g2 <- ggplot(intSteps, aes(x=intSteps$interval, y=intSteps$isteps))
 g2 <- g2 +  geom_line()
 g2 <- g2 +  scale_x_continuous(breaks = round(seq(min(intSteps$interval), max(intSteps$interval), by = 200)))
@@ -132,6 +138,10 @@ print(g2)
 ```
 
 ![](PA1_template_files/figure-html/step5-1.png)<!-- -->
+
+```r
+#dev.off()
+```
 
 + **Maximum Activity Interval**
 The interval producing the maximum activity level was produced by the following code and captured in the xint numeric variable.
@@ -174,7 +184,8 @@ This resulted in improved data and the following histogram:
 
 ```r
 sumSteps2 <- act2 %>% group_by(date) %>% summarise(ssteps = sum(steps))
-windows()
+#windows()
+#png(filename = "Step4.png", width = 480, height = 480)
 g <- ggplot(sumSteps2, aes(x=as.Date(sumSteps2$date), y=sumSteps2$ssteps))
 g <- g +  geom_bar(stat = "identity")
 g <- g +  scale_x_date(date_labels = "%b %d", date_breaks = "1 week")
@@ -183,6 +194,10 @@ print(g)
 ```
 
 ![](PA1_template_files/figure-html/step9-1.png)<!-- -->
+
+```r
+#dev.off()
+```
 
 + **Mean and Median Values**
 Produced by the following code.
@@ -239,7 +254,8 @@ The following plot show a significant difference in weekend vs weekday activity 
 
 
 ```r
-windows()
+#windows()
+#png(filename = "Step5.png", width = 480, height = 480)
 p <- ggplot(act2, aes(interval, isteps)) + geom_bar(stat="identity")
 p <- p + scale_x_continuous(breaks = round(seq(min(act2$interval), max(act2$interval), by = 200)))
 p <- p + facet_grid(. ~ act2$weekend)
@@ -249,3 +265,7 @@ print(p + labs(x="Interval", y="Avg Interval Steps") + ggtitle("Step 5 - Weekday
 ```
 
 ![](PA1_template_files/figure-html/step13-1.png)<!-- -->
+
+```r
+#dev.off()
+```
