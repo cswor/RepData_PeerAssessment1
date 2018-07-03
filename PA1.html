@@ -143,6 +143,7 @@ knitr::opts_hooks$set(fig.cap = function(options) {
 <p>The data for this project is provided on the class web site as a .zip file which contains a .csv file. It contains activity data (steps by date and 5 minute interval) for the months of Oct-Nov, 2012. This file was downloaded and extraced to my working directory. The following code was used to read the data. The first few lines of the activity data is shown.</p>
 <pre class="r"><code># step 1
 act &lt;- read.csv(&quot;activity.csv&quot;)
+actNM &lt;- act[complete.cases(act),]
 head(act)</code></pre>
 <pre><code>##   steps       date interval
 ## 1    NA 2012-10-01        0
@@ -152,8 +153,7 @@ head(act)</code></pre>
 ## 5    NA 2012-10-01       20
 ## 6    NA 2012-10-01       25</code></pre>
 <p>The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set) which has been dropped.</p>
-<pre class="r"><code>actNM &lt;- act[complete.cases(act),]
-sumSteps &lt;- actNM %&gt;% group_by(date) %&gt;% summarise(ssteps = sum(steps))
+<pre class="r"><code>sumSteps &lt;- actNM %&gt;% group_by(date) %&gt;% summarise(ssteps = sum(steps))
 windows()
 g &lt;- ggplot(sumSteps, aes(x=as.Date(sumSteps$date), y=sumSteps$ssteps)) # + stat_summary(fun.y=sum)
 g &lt;- g +  geom_bar(stat = &quot;identity&quot;)
