@@ -4,8 +4,29 @@ output:
   html_document:
     keep_md: true
 ---
-```{r setup(echo = FALSE)}
+
+```r
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 library(ggplot2)
 library(chron)
 knitr::opts_chunk$set(echo = TRUE)
@@ -18,13 +39,26 @@ knitr::opts_hooks$set(fig.cap = function(options) {
 ## Loading and preprocessing the data
 The data for this project is provided on the class web site as a .zip file which contains a .csv file. It contains activity data (steps by date and 5 minute interval) for the months of Oct-Nov, 2012. This file was downloaded and extraced to my working directory. The following code was used to read the data. The first few lines of the activity data is shown.
 
-```{r, cache = T}
+
+```r
 # step 1
 act <- read.csv("activity.csv")
 head(act)
 ```
-The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set). 
-```{r, cache = T}
+
+```
+##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
+```
+The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set) which has been dropped. 
+
+
+```r
 actNM <- act[complete.cases(act),]
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
 windows()
@@ -35,35 +69,62 @@ g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 2 - Total Daily Steps w/
 print(g)
 ```
 
+![](PA1_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
 + **Mean and Median Daily Activity**
 The following code computes daily summary data for the activity dataset.
 
-```{r, cache = T}
+
+```r
 daystats <- actNM %>% group_by(date) %>% summarise(daymn = sum(steps), daymd = median(steps))
 avgdaystats <- daystats %>% summarise(avgmn = mean(daymn), md = median(daymd))
 mn <- as.numeric(avgdaystats[1,1])
 md <- as.numeric(avgdaystats[1,2])
 print(paste("Mean daily steps = ", mn))
+```
+
+```
+## [1] "Mean daily steps =  10766.1886792453"
+```
+
+```r
 print(paste("Median daily steps = ", md))
+```
+
+```
+## [1] "Median daily steps =  0"
 ```
 
 ## What is mean total number of steps taken per day?
 The following code computes mean and median daily values for the activity dataset.
 
-```{r, cache = T}
+
+```r
 daystats <- actNM %>% group_by(date) %>% summarise(daymn = sum(steps), daymd = median(steps))
 avgdaystats <- daystats %>% summarise(avgmn = mean(daymn), md = median(daymd))
 mn <- as.numeric(avgdaystats[1,1])
 md <- as.numeric(avgdaystats[1,2])
 print(paste("Mean daily steps = ", mn))
+```
+
+```
+## [1] "Mean daily steps =  10766.1886792453"
+```
+
+```r
 print(paste("Median daily steps = ", md))
+```
+
+```
+## [1] "Median daily steps =  0"
 ```
 
 
 ## What is the average daily activity pattern?
 The following code produces a the average activity level by interval.
 
-```{r, cache = T}
+
+```r
 intSteps <- actNM %>% group_by(interval) %>% summarise(isteps = mean(steps))
 
 windows()
@@ -74,26 +135,39 @@ g2 <- g2 + labs(x="Interval", y="Avg Steps") + ggtitle("Step 3 - Average Steps b
 print(g2)
 ```
 
+![](PA1_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 + **Maximum Activity Interval**
 The interval producing the maximum activity level was produced by the following code and captured in the xint numeric variable.
 
-```{r, cache = T}
+
+```r
 maxobs <- intSteps[which.max(intSteps$isteps),]
 xint <- as.numeric(maxobs[1,1])
 print(xint)
 ```
 
+```
+## [1] 835
+```
+
 ## Imputing missing values
 The above analysis is affected by missing values (coded as NA in the original dataset). The following code quantifies this impact.
 
-```{r, cache = T}
+
+```r
 miss <- sum(is.na(act$steps)) #ans. 2304
 print(paste("Number of missing data points = ", miss))
+```
+
+```
+## [1] "Number of missing data points =  2304"
 ```
 + **Missing Value Method**
 After examining the data, I settled on using the mean number of steps by interval to replace missing values. Mean daily values were ruled out as the activity level is clearly impacted by time of day (the interval). The following code was used to "impute" the values to be used to replace the missing data:
 
-```{r, cache = T}
+
+```r
 act2 <- merge(act, intSteps, by = "interval")
 act2$steps <- ifelse(is.na(act2$steps), yes = act2$isteps, no = act2$steps)
 ```
@@ -101,7 +175,8 @@ act2$steps <- ifelse(is.na(act2$steps), yes = act2$isteps, no = act2$steps)
 + **With Imputed Values for Missing Data** 
 This resulted in improved data and the following histogram:
 
-```{r, cache = T}
+
+```r
 sumSteps2 <- act2 %>% group_by(date) %>% summarise(ssteps = sum(steps))
 windows()
 g <- ggplot(sumSteps2, aes(x=as.Date(sumSteps2$date), y=sumSteps2$ssteps))
@@ -111,37 +186,63 @@ g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 4 - Total Daily Steps w/
 print(g)
 ```
 
+![](PA1_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
 + **Mean and Median Values** 
 Produced by the following code.
 
-```{r, cache = T}
+
+```r
 avgdaystats2 <- sumSteps2 %>% summarise(avgmn = mean(ssteps), md = median(ssteps))
 mn <- as.numeric(avgdaystats2[1,1])
 md <- as.numeric(avgdaystats2[1,2])
 print(paste("Mean daily steps = ", mn))
-print(paste("Median daily steps = ", md))
+```
 
+```
+## [1] "Mean daily steps =  10766.1886792453"
+```
+
+```r
+print(paste("Median daily steps = ", md))
+```
+
+```
+## [1] "Median daily steps =  10766.1886792453"
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
 
 To evaluate the impact of weekend vs weekday activity patterns, the following code was used to introduce a factor for weekend and weekday activities. The chron package was used (chron::is.weekend() function) to create the new factor. One variable was added to the dataset to capture this information; weekend. The head of the enhanced dataset is shown.
 
 + **Setting Factors for Weekend and Weekday**
-```{r, cache = T}
+
+```r
 act2$weekend <- ifelse(is.weekend(as.Date(act2$date)), yes = "weekend", no = "weekday")
 head(act2)
+```
+
+```
+##   interval    steps       date   isteps weekend
+## 1        0 1.716981 2012-10-01 1.716981 weekday
+## 2        0 0.000000 2012-11-23 1.716981 weekday
+## 3        0 0.000000 2012-10-28 1.716981 weekend
+## 4        0 0.000000 2012-11-06 1.716981 weekday
+## 5        0 0.000000 2012-11-24 1.716981 weekend
+## 6        0 0.000000 2012-11-15 1.716981 weekday
 ```
 + **Panels for Weekend vs Weekday**
 The following code was used to evaluate the impact of weekend vs weekday effects on activity level. Means and medians are calculated by interval by weekend(factor).
 
-```{r, cache = T}
+
+```r
 act2 <- act2 %>% group_by(interval,weekend) %>% summarise(isteps = mean(steps), imedian = median(steps))
 ```
 
 + **Results of Analysis**
 The following plot show a significant difference in weekend vs weekday activity levels. As you can see, weekday activities spike between interval 800 and 900 where as weekend activity does not reach the same high level but has somewhat higher levels across the day.
 
-```{r, cache = T}
+
+```r
 windows()
 p <- ggplot(act2, aes(interval, isteps)) + geom_bar(stat="identity")
 p <- p + scale_x_continuous(breaks = round(seq(min(act2$interval), max(act2$interval), by = 200)))
@@ -149,5 +250,6 @@ p <- p + facet_grid(. ~ act2$weekend)
 p <- p + theme(axis.text = element_text(size=rel(.6)))
 
 print(p + labs(x="Interval", y="Avg Interval Steps") + ggtitle("Step 5 - Weekday vs Weekend Behavior"))
-
 ```
+
+![](PA1_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
