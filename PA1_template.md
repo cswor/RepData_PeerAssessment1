@@ -7,26 +7,6 @@ output:
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(ggplot2)
 library(chron)
 knitr::opts_chunk$set(echo = TRUE)
@@ -68,7 +48,7 @@ g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 2 - Total Daily Steps w/
 print(g)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 + **Mean and Median Daily Activity**
 The following code computes daily summary data for the activity dataset.
@@ -134,7 +114,7 @@ g2 <- g2 + labs(x="Interval", y="Avg Steps") + ggtitle("Step 3 - Average Steps b
 print(g2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 + **Maximum Activity Interval**
 The interval producing the maximum activity level was produced by the following code and captured in the xint numeric variable.
@@ -185,7 +165,7 @@ g <- g + labs(x="Day", y="Total Steps") + ggtitle("Step 4 - Total Daily Steps w/
 print(g)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 + **Mean and Median Values** 
 Produced by the following code.
@@ -251,4 +231,4 @@ p <- p + theme(axis.text = element_text(size=rel(.6)))
 print(p + labs(x="Interval", y="Avg Interval Steps") + ggtitle("Step 5 - Weekday vs Weekend Behavior"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
