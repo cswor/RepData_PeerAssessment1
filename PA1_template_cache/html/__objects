@@ -1,0 +1,13 @@
+step1	act	actNM
+step2	g	sumSteps	.Random.seed
+step3	avgdaystats	daystats	md	mn
+step4	avgdaystats	daystats	md	mn
+step5	g2	intSteps
+step6	maxobs	xint
+step7	miss
+step8	act2
+step9	g	sumSteps2
+step10	avgdaystats2	md	mn
+step11	act2
+step12	act2
+step13	p

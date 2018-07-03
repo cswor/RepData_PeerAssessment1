@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output:
-  html_document:
+  html_document: 
     keep_md: true
 ---
 
@@ -15,14 +15,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Loading and preprocessing the data
 The data for this project is provided on the class web site as a .zip file which contains a .csv file. It contains activity data (steps by date and 5 minute interval) for the months of Oct-Nov, 2012. This file was downloaded and extraced to my working directory. The following code was used to read the data. The first few lines of the activity data is shown.
 
-```{r, cache = T}
+```{r step1, cache = T, autodep= TRUE}
 # step 1
 act <- read.csv("activity.csv")
 actNM <- act[complete.cases(act),]
 head(act)
 ```
 The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set).
-```{r, cache = T}
+```{r step2, cache = T, autodep= TRUE}
 
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
 windows()
@@ -36,7 +36,7 @@ print(g)
 + **Mean and Median Daily Activity**
 The following code computes daily summary data for the activity dataset.
 
-```{r, cache = T}
+```{r step3, cache = T, autodep= TRUE}
 daystats <- actNM %>% group_by(date) %>% summarise(daymn = sum(steps), daymd = median(steps))
 avgdaystats <- daystats %>% summarise(avgmn = mean(daymn), md = median(daymd))
 mn <- as.numeric(avgdaystats[1,1])
@@ -48,7 +48,7 @@ print(paste("Median daily steps = ", md))
 ## What is mean total number of steps taken per day?
 The following code computes mean and median daily values for the activity dataset.
 
-```{r, cache = T}
+```{r step4, cache = T, autodep= TRUE}
 daystats <- actNM %>% group_by(date) %>% summarise(daymn = sum(steps), daymd = median(steps))
 avgdaystats <- daystats %>% summarise(avgmn = mean(daymn), md = median(daymd))
 mn <- as.numeric(avgdaystats[1,1])
@@ -61,7 +61,7 @@ print(paste("Median daily steps = ", md))
 ## What is the average daily activity pattern?
 The following code produces a the average activity level by interval.
 
-```{r, cache = T}
+```{r step5, cache = T, autodep= TRUE}
 intSteps <- actNM %>% group_by(interval) %>% summarise(isteps = mean(steps))
 
 windows()
@@ -75,7 +75,7 @@ print(g2)
 + **Maximum Activity Interval**
 The interval producing the maximum activity level was produced by the following code and captured in the xint numeric variable.
 
-```{r, cache = T}
+```{r step6, cache = T, autodep= TRUE}
 maxobs <- intSteps[which.max(intSteps$isteps),]
 xint <- as.numeric(maxobs[1,1])
 print(xint)
@@ -84,14 +84,14 @@ print(xint)
 ## Imputing missing values
 The above analysis is affected by missing values (coded as NA in the original dataset). The following code quantifies this impact.
 
-```{r, cache = T}
+```{r step7, cache = T, autodep= TRUE}
 miss <- sum(is.na(act$steps)) #ans. 2304
 print(paste("Number of missing data points = ", miss))
 ```
 + **Missing Value Method**
 After examining the data, I settled on using the mean number of steps by interval to replace missing values. Mean daily values were ruled out as the activity level is clearly impacted by time of day (the interval). The following code was used to "impute" the values to be used to replace the missing data:
 
-```{r, cache = T}
+```{r step8, cache = T, autodep= TRUE}
 act2 <- merge(act, intSteps, by = "interval")
 act2$steps <- ifelse(is.na(act2$steps), yes = act2$isteps, no = act2$steps)
 ```
@@ -99,7 +99,7 @@ act2$steps <- ifelse(is.na(act2$steps), yes = act2$isteps, no = act2$steps)
 + **With Imputed Values for Missing Data**
 This resulted in improved data and the following histogram:
 
-```{r, cache = T}
+```{r step9, cache = T, autodep= TRUE}
 sumSteps2 <- act2 %>% group_by(date) %>% summarise(ssteps = sum(steps))
 windows()
 g <- ggplot(sumSteps2, aes(x=as.Date(sumSteps2$date), y=sumSteps2$ssteps))
@@ -112,7 +112,7 @@ print(g)
 + **Mean and Median Values**
 Produced by the following code.
 
-```{r, cache = T}
+```{r step10, cache = T, autodep= TRUE}
 avgdaystats2 <- sumSteps2 %>% summarise(avgmn = mean(ssteps), md = median(ssteps))
 mn <- as.numeric(avgdaystats2[1,1])
 md <- as.numeric(avgdaystats2[1,2])
@@ -125,21 +125,21 @@ print(paste("Median daily steps = ", md))
 To evaluate the impact of weekend vs weekday activity patterns, the following code was used to introduce a factor for weekend and weekday activities. The chron package was used (chron::is.weekend() function) to create the new factor. One variable was added to the dataset to capture this information; weekend. The head of the enhanced dataset is shown.
 
 + **Setting Factors for Weekend and Weekday**
-```{r, cache = T}
+```{r step11, cache = T, autodep= TRUE}
 act2$weekend <- ifelse(is.weekend(as.Date(act2$date)), yes = "weekend", no = "weekday")
 head(act2)
 ```
 + **Panels for Weekend vs Weekday**
 The following code was used to evaluate the impact of weekend vs weekday effects on activity level. Means and medians are calculated by interval by weekend(factor).
 
-```{r, cache = T}
+```{r step12, cache = T, autodep= TRUE}
 act2 <- act2 %>% group_by(interval,weekend) %>% summarise(isteps = mean(steps), imedian = median(steps))
 ```
 
 + **Results of Analysis**
 The following plot show a significant difference in weekend vs weekday activity levels. As you can see, weekday activities spike between interval 800 and 900 where as weekend activity does not reach the same high level but has somewhat higher levels across the day.
 
-```{r, cache = T}
+```{r step13, cache = T, autodep= TRUE}
 windows()
 p <- ggplot(act2, aes(interval, isteps)) + geom_bar(stat="identity")
 p <- p + scale_x_continuous(breaks = round(seq(min(act2$interval), max(act2$interval), by = 200)))
