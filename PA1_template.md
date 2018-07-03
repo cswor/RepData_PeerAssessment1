@@ -43,6 +43,7 @@ The data for this project is provided on the class web site as a .zip file which
 ```r
 # step 1
 act <- read.csv("activity.csv")
+actNM <- act[complete.cases(act),]
 head(act)
 ```
 
@@ -58,7 +59,6 @@ head(act)
 The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set). 
 
 ```r
-actNM <- act[complete.cases(act),]
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
 windows()
 g <- ggplot(sumSteps, aes(x=as.Date(sumSteps$date), y=sumSteps$ssteps)) # + stat_summary(fun.y=sum)
