@@ -23,7 +23,8 @@ The data for this project is provided on the class web site as a .zip file which
 act <- read.csv("activity.csv")
 head(act)
 ```
-The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set). 
+The following code produces a histogram of the daily steps taken. As you can see, some days have no bar indicating the presence of missing data (NA in the data set) which has been dropped. 
+
 ```{r, cache = T}
 actNM <- act[complete.cases(act),]
 sumSteps <- actNM %>% group_by(date) %>% summarise(ssteps = sum(steps))
