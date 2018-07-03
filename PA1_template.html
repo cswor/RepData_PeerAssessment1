@@ -122,14 +122,18 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(dplyr)
-library(ggplot2)
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggplot2)
 library(chron)
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_hooks$set(fig.cap = function(options) {
-   options$cache &lt;- TRUE
-   options
-})</code></pre>
+knitr::opts_chunk$set(echo = TRUE)</code></pre>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
 <p>The data for this project is provided on the class web site as a .zip file which contains a .csv file. It contains activity data (steps by date and 5 minute interval) for the months of Oct-Nov, 2012. This file was downloaded and extraced to my working directory. The following code was used to read the data. The first few lines of the activity data is shown.</p>

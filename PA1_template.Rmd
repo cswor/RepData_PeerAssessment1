@@ -10,10 +10,6 @@ library(dplyr)
 library(ggplot2)
 library(chron)
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_hooks$set(fig.cap = function(options) {
-   options$cache <- TRUE
-   options
-})
 ```
 
 ## Loading and preprocessing the data
